@@ -1,31 +1,42 @@
-# Python File Writer Template
+# VectorIO
+OVITO extension to read/write [vectors](https://www.ovito.org/docs/current/reference/pipelines/visual_elements/vectors.html) with all attached properties from/to a [compressed numpy file](https://numpy.org/doc/2.1/reference/generated/numpy.savez_compressed.html#numpy.savez_compressed) or a CSV file. 
 
-Template for a custom Python-based utility that hooks into OVITO and can easily be shared with other users.
+The configuration of the [visual element](https://www.ovito.org/docs/current/reference/pipelines/visual_elements/vectors.html) is not exported.
 
-This repository contains a template for creating your own [Python file writer template](https://ovito.org/docs/python/introduction/custom_file_writers.html#writing-custom-file-writers), 
-which can be installed into *OVITO Pro* or the [`ovito`](https://pypi.org/project/ovito/) Python module using *pip*.
+## Example
+The vectors created in ``examples/example.ovito`` can be exported using the [export file dialog](https://www.ovito.org/manual/usage/export.html) selecting the "Vector file writer" format.
 
-## Getting Started
+The resulting ``.npz`` file matches ``examples/example.npz``. This file can be opened in OVITO Pro GUI. This reconstructs the vectors with all their properties. CSV files cannot be imported back into OVITO Pro.
 
-1. Click the "Use this template" button to create your own repository based on this template.
-2. Rename `src/PackageName` to reflect the name of your utility.
-3. Implement your [file writer](https://ovito.org/docs/python/introduction/custom_file_writers.html#writing-custom-file-writers) in [`src/PackageName/__init__.py`](src/PackageName/__init__.py).
-4. Fill in the [`pyproject.toml`](pyproject.toml) file. Fields that need to be replaced with your information are enclosed in descriptive `[[field]]` tags. Please make sure to include ovito>=3.12.0 as a dependency. Depending on your needs, you can add additional fields to the `pyproject.toml` file. Information can be found [here](https://setuptools.pypa.io/en/latest/userguide/index.html).
-5. Fill in the [`README_Template.md`](README_Template.md) file. Again, the `[[fields]]` placeholders should guide you. Feel free to add other sections like "Images", "Citation", or "References" as needed.
-6. Add meaningful examples and data sample files to the `examples` directory to help others understand the use of your modifier.
-7. Pick a license for your project and replace the current (MIT) [`LICENSE`](LICENSE) file with your license. If you keep the MIT license, please update the name and year in the current file.
-8. Once you're done, rename `README_Template.md` to `README.md`, replacing this file.
+Both import and export are also available from Python:
 
-## Testing
-This repository is configured to enable automated testing using the [pytest](https://docs.pytest.org/en/7.4.x/) framework. Tests are automatically executed after each push to the main branch. To set up and activate automated testing, follow these two steps:
+```Python
+from ovito.io import import_file, export_file
 
-1. Write your tests in the `test/test_file_reader.py` file. You can also use other filenames that adhere to the pytest requirements.
-2. Open the `.github/workflows/python-tests.yml` file and remove the `if: ${{ false }}` condition on line 15.
+# import npz file
+pipeline = import_file("examples/example.npz")
 
-If needed, you can also adjust the operating system and Python versions by modifying the following lines:
-```yaml
-os: [ubuntu-latest, macos-latest, windows-latest]
-python-version: ["3.10", "3.11", "3.12"]
+from VectorIO import VectorFileWriter
+
+# export npz file
+export_file(data, "examples/example.npz", format=VectorFileWriter, key=data.vectors["example_vectors"])
 ```
 
-As of August 16, 2023, according to the [GitHub documentation](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions), *"GitHub Actions usage is free for standard GitHub-hosted runners in public repositories, and for self-hosted runners."* Please refer to the GitHub documentation if you are uncertain about incurring costs.
+## Installation
+- From the OVITO Pro using the [extensions GUI](https://www.ovito.org/docs/current/advanced_topics/python_extensions.html#topics-python-extensions)
+- OVITO Pro [integrated Python interpreter](https://docs.ovito.org/python/introduction/installation.html#ovito-pro-integrated-interpreter):
+  ```
+  ovitos -m pip install --user git+https://github.com/ovito-org/VectorIO
+  ``` 
+  The `--user` option is recommended and [installs the package in the user's site directory](https://pip.pypa.io/en/stable/user_guide/#user-installs).
+
+- Other Python interpreters or Conda environments:
+  ```
+  pip install git+https://github.com/ovito-org/VectorIO
+  ```
+
+## Technical information / dependencies
+- Tested on OVITO version 3.12.0
+
+## Contact
+Daniel Utt (utt@ovito.org)

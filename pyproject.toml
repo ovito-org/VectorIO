@@ -3,12 +3,12 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "[[PackageName]]"
-version = "[[Version number]]"
-description = "[[Short description]]"
+name = "VectorIO"
+version = "2025.1"
+description = "A file writer & writer for OVITO vectors with their auxilliary information"
 keywords = ["ovito", "ovito-extension"]
-authors = [{name = "[[Author 1 name]]", email = "[[Author 1 email]]"}, {name = "[[Author 2 name]]", email = "[[Author 2 email]]"}]
-maintainers = [{name = "[[Maintainer 1 name]]", email = "[[Maintainer 1 email]]"}]
+authors = [{name = "Daniel Utt", email = "utt@ovito.org"}]
+maintainers = [{name = "Daniel Utt", email = "utt@ovito.org"}]
 license = {text = "[[License]]"}
 readme = "README.md"
 requires-python = ">=3.9"
@@ -17,10 +17,13 @@ dependencies = [
 ]
 
 [project.urls]
-repository = "[[Repository Link]]"
+repository = "https://github.com/ovito-org/VectorIO"
 
 [project.entry-points.'OVITO.FileWriter']
-"[[Human readable file writer name]]" = "[[PackageName]]:[[FileWriterName]]"
+"Vector File Writer" = "VectorIO:VectorFileWriter"
+
+[project.entry-points.'OVITO.FileReader']
+"Vector File Reader" = "VectorIO:VectorFileReader"
 
 [tool.setuptools.packages.find]
 where = ["src"]
